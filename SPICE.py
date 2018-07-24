@@ -3,7 +3,7 @@ class SPICE:
     # SPICE Sparsity Promoting Iterated Constrained Endmembers Algorithm
     #       Finds Endmembers and Unmixes Input Data
     #
-    # Syntax: [endmembers, P] = SPICE(inputData, parameters)
+    # Syntax: SPICE.SPICE_func(inputData, parameters)
     #
     # Inputs:
     #   inputData - double Mat - NxM matrix of M data points of
@@ -40,8 +40,8 @@ class SPICE:
     # All rights reserved.
     #
     #
-    # Python Implemtation: Brandon Rosenthal
-    # Unitversity of Florida, Computer Science and Engineering
+    # Python Implantation: Brandon Rosenthal
+    # University of Florida, Computer Science and Engineering
     # Email Address: brosenthal140@ufl.edu
     # Latest Revision: July 24, 2018
     # This product is Copyright (c) 2018 University of Missouri and University
@@ -85,20 +85,22 @@ class SPICE:
         endmemberPruneThreshold = 1 * (10 ^ -9) # Proportion threshold used to prune endmembers
         changeThresh = 1 * (10 ^ -4)            # Used as the stopping criterion
         iterationCap = 5000                     # Alternate stopping criterion
+        pruningIteration = 1                    # 
         produceDisplay = True                   # Set to 1 if a progress display is wanted
 
         initEM = []                             # Keep empty to randomly select endmembers, otherwise NxM matrix
                                                 # of M endmembers with N spectral bands, Number of endmembers
                                                 # must equal parameters.M
+
         options = ['Display', 'off']            # Options for Display
 
 
     # See opening comment declaration for parameter definitions
-    def SPICE_func(self, endmembers, P):
+    def SPICE_func(self, inputData, parameters):
 
         addpath('.\qpc');
         parameters.pruningIteration = 1;
-        parameters.options = optimset('Display', 'off');
+        parameters.options = ['Display', 'off'];
         M = parameters.M;
         X = inputData;
 
