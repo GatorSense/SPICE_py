@@ -72,12 +72,8 @@ Created on Sun Jan 21 21:52:00 2018
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #==============================================================================
 
-import scipy.io as sio
 import numpy as np
 from QPP import quadprog_solve_qp
-from loadmat import loadmat
-#this line
-from cvxopt import solvers, matrix
 
 class SPICEParameters():
     
@@ -89,7 +85,7 @@ class SPICEParameters():
         self.changeThresh = 1e-4  #Used as the stopping criterion
         self.iterationCap = 5000 #Alternate stopping criterion
         self.produceDisplay = 1
-        self.initEM = loadmat('SPICE_arr.mat')['initEM'] # None  #This randomly selects parameters.M initial endmembers from the input data
+        self.initEM = None  #This randomly selects parameters.M initial endmembers from the input data
 
 
 def SPICE(inputData, parameters):
@@ -101,14 +97,14 @@ def SPICE(inputData, parameters):
     parameters.pruningIteration = 1
     M = parameters.M
     X = inputData
-  #  input('Check var data X = %s \n M = %s \n' %(str(X), str(M)))
+
     if parameters.initEM is None:
         # Find Random Initial Endmembers
         randIndices = np.random.permutation(inputData.shape[1])
-        randIndices = randIndices[0:parameters.M] # shouldn't there be a -1 here to make it equivalent to MATLAB?
+        randIndices = randIndices[0:parameters.M]
         endmembers = inputData[:,randIndices]
         parameters.initEM = endmembers
-        sio.savemat('SPICE_arr.mat', {'initEM' : endmembers})
+
     else:
         # Use endmembers provided
         M = parameters.initEM.shape[1]
@@ -129,7 +125,6 @@ def SPICE(inputData, parameters):
         
         iteration = iteration + 1
 
-        #input('Check var data X = %s \n endmembers = %s \n parameters.gamma = %s \n P = %s' % (str(X), str(endmembers), str(parameters.gamma), str(P)))
         # Given Endmembers, minimize P -- Quadratic Programming Problem
         P = unmix2(X, endmembers, parameters.gamma, P)
         
@@ -215,6 +210,7 @@ def SPICE(inputData, parameters):
 ## are added to matrix G and h respectively.
 
 def unmix2(data, endmembers, gammaConst=0, P=None):
+
     X = data  # endmembers should be column vectors
     M = endmembers.shape[1]  # number of endmembers
     N = X.shape[1]  # number of pixels
