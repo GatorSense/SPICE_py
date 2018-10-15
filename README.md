@@ -54,9 +54,11 @@ Electrical and Computer Engineering
 University of Florida    
 azare@ufl.edu  
 
+This program uses the python packages in the requirements.txt file. Those can be installed using the command:
+```pip install -r requirements.txt```
 
+Note that the newer versions of the packages in requirements.txt are untested, but they should still work.
 
-This code uses QPC: Quadratic Programming in C (http://sigpromu.org/quadprog/index.html).    The Quadratic Programming implementation can be downloaded here: http://sigpromu.org/quadprog/register.php?target=/quadprog/download.php and is free for academic/non-commercial use.  If this code is used in any publications, the software must be referenced.  
 
 
 % This product is Copyright (c) 2018 
