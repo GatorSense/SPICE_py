@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Jan 21 21:52:00 2018
+Revised/Tested on Mon Oct 15 12:32:00 2018
 
-@author: weihuang.xu
+@author: weihuang.xu, Caleb Robey
 """
 #==============================================================================
 # SPICE Sparsity Promoting Iterated Constrained Endmembers Algorithm
