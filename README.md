@@ -19,7 +19,18 @@ If you would like to use the default parameters (described below), use the comma
 
 `parameters = SPICEParameters()`
 
-The inputData input is a DxM matrix of M input data points with D dimensions.  Each of the M pixels has D spectral bands.  Each pixel is a column vector.   The parameters input is a struct with the following fields:
+The inputData input is a DxM matrix of M input data points with D dimensions.  Each of the M pixels has D spectral bands.  Each pixel is a column vector.   
+
+This form can be achieved from a three-dimensional hyperspectral numpy array using the following commands:
+
+```python
+import numpy as np
+
+inputData = np.reshape(inputData, (inputData.shape[0]*inputData.shape[1], inputData.shape[2]))
+
+```
+
+The parameters input is a struct with the following fields:
 
     parameters.u :  This is the regularization parameter that trades off between the RSS and SPT terms.
     parameters.gamma : Gamma constant for the SPT term, controls the degree of sparsity desired
