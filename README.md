@@ -10,6 +10,7 @@ Zare, A.; Gader, P.; , "Sparsity Promoting Iterated Constrained Endmember Detect
 The SPICE Algorithm in Python is run using the function:
 
 `from SPICE import *
+
 endmembers, P = SPICE(inputData, parameters)
 `
 
@@ -29,7 +30,7 @@ The inputData input is a DxM matrix of M input data points with D dimensions.  E
     parameters.initEM = nan : By setting this to nan, the algorithm randomly selects initial endmembers from the input data. You can also provide initial endmembers by inputting a matrix of endmembers.  Every column is one endmember.  The number of endmembers should match parameters.M.
 
 The parameters structure can be generated using the SPICEParameters.m function.  
-unmix2, which is imported with `from SPICE import *` is a required helper function which unmixes the data points given the endmembers. 
+unmix2, which is imported with ```python from SPICE import *```, is a required helper function which unmixes the data points given the endmembers. 
 
 To Run the SPICE Algorithm, with the example data set the following command can be used: 
 [endmembers, P] = SPICE(inputData, SPICEParameters());
