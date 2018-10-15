@@ -39,13 +39,10 @@ The parameters input is a struct with the following fields:
     parameters.iterationCap : Maximum Number of Iterations
     parameters.endmemberPruneThreshold : This is the pruning threshold for endmembers
     parameters.produceDisplay : Set this to 1 if progress display is desired, 0 otherwise
-    parameters.initEM = nan : By setting this to nan, the algorithm randomly selects initial endmembers from the input data. You can also provide initial endmembers by inputting a matrix of endmembers.  Every column is one endmember.  The number of endmembers should match parameters.M.
+    parameters.initEM = None : By setting this to None, the algorithm randomly selects initial endmembers from the input data. You can also provide initial endmembers by inputting a matrix of endmembers.  Every column is one endmember.  The number of endmembers should match parameters.M.
 
 The parameters structure can be generated using the SPICEParameters.m function.  
 unmix2, which is imported with ```from SPICE import *```, is a required helper function which unmixes the data points given the endmembers. 
-
-To Run the SPICE Algorithm, with the example data set the following command can be used: 
-[endmembers, P] = SPICE(inputData, SPICEParameters());
 
 **Note: Often the parameters must be adjusted for a particular data set. Generally, u is set to between 0.001 and 0.1 depending on noise levels in the data. gamma is generally set to a value between 1 and 10 depending on the data set.   We have also found that SPICE has improved performance if the data has been normalized between 0 and 1 before running SPICE (e.g. Subtracting the minimum and then dividing by the max OR normalizing each spectrum by its L2 norm).**
 
