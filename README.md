@@ -12,7 +12,9 @@ The SPICE Algorithm in Python is run using the function:
 `from SPICE import *
 endmembers, P = SPICE(inputData, parameters)
 `
+
 If you would like to use the default parameters (described below), use the command:
+
 `parameters = SPICEParameters()`
 
 The inputData input is a DxM matrix of M input data points with D dimensions.  Each of the M pixels has D spectral bands.  Each pixel is a column vector.   The parameters input is a struct with the following fields:
