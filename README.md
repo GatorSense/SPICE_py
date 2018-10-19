@@ -61,11 +61,19 @@ a plot of the wavelength and reflectance of each endmember will appear.
 
 ### Requirements
 
+It is recommended that you use a python virtual environment for this project using the following commands from the 
+SPICE_py directory:
+* ```pip install virtualenv``` (If you don't have the package installed already)
+* ```python3 -m venv spice_env```
+* ```source ./spice_env/bin/activate``` (Linux/MAC OS)
+* ```spice_env\bin\activate.bat``` (Windows)
+
+
 This program uses the python packages in the requirements.txt file. Those can be installed using the command:
-```pip install -r requirements.txt```
 
-Note that the newer versions of the packages in requirements.txt are untested, but they should still work.
+```pip install -r requirements.txt``` 
 
+This must also be done from the SPICE_py directory.
 
 ### Questions
 If you have any questions, please contact:  
