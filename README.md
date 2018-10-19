@@ -46,18 +46,34 @@ unmix2, which is imported with ```from SPICE import *```, is a required helper f
 
 **Note: Often the parameters must be adjusted for a particular data set. Generally, u is set to between 0.001 and 0.1 depending on noise levels in the data. gamma is generally set to a value between 1 and 10 depending on the data set.   We have also found that SPICE has improved performance if the data has been normalized between 0 and 1 before running SPICE (e.g. Subtracting the minimum and then dividing by the max OR normalizing each spectrum by its L2 norm).**
 
+### Running the Demo
+This repository includes sample data in the form of a pickle file called "hsi_data.pkl". This contains a hyperspectral data cube, which can be analyzed by the SPICE algorithm. 
 
+To run the algorithm, use the command:
+
+```python spice_py_demo.py```
+
+The algorithm should run for no more than 40 iterations (typically much less) and will detect 4 or 5 endmembers, depending on 
+the randomized endmember initialization parameter. After the algorithm is finished, you will be prompted to choose whether
+you would like to graph the output. Choose yes (Y) and a figure will appear with the proportions of each endmember in 
+the context of the original image. Expand this window for a cleaner view of the plots. After closing this figure window,
+a plot of the wavelength and reflectance of each endmember will appear.
+
+####Requirements
+
+This program uses the python packages in the requirements.txt file. Those can be installed using the command:
+```pip install -r requirements.txt```
+
+Note that the newer versions of the packages in requirements.txt are untested, but they should still work.
+
+
+####Questions
 If you have any questions, please contact:  
 
 Alina Zare  
 Electrical and Computer Engineering  
 University of Florida    
 azare@ufl.edu  
-
-This program uses the python packages in the requirements.txt file. Those can be installed using the command:
-```pip install -r requirements.txt```
-
-Note that the newer versions of the packages in requirements.txt are untested, but they should still work.
 
 
 
