@@ -59,7 +59,7 @@ you would like to graph the output. Choose yes (Y) and a figure will appear with
 the context of the original image. Expand this window for a cleaner view of the plots. After closing this figure window,
 a plot of the wavelength and reflectance of each endmember will appear.
 
-####Requirements
+### Requirements
 
 This program uses the python packages in the requirements.txt file. Those can be installed using the command:
 ```pip install -r requirements.txt```
@@ -67,7 +67,7 @@ This program uses the python packages in the requirements.txt file. Those can be
 Note that the newer versions of the packages in requirements.txt are untested, but they should still work.
 
 
-####Questions
+### Questions
 If you have any questions, please contact:  
 
 Alina Zare  
