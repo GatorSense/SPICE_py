@@ -34,10 +34,10 @@ Pygments==2.2.0
 pyparsing==2.2.0
 pysptools==0.14.2
 python-dateutil==2.6.1
-pytz==2017.3
-pyzmq==16.0.3
+pytz>=2017.3
+pyzmq>=16.0.3
 qtconsole==4.3.1
-quadprog==0.1.6
+quadprog>=0.1.6
 scikit-learn==0.19.1
 scipy==1.0.0
 Send2Trash==1.4.2
