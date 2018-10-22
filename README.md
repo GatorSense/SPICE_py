@@ -5,6 +5,10 @@ Sparsity Promoting Iterated Constrained Endmembers
 NOTE: If the SPICE Algorithm is used in any publication or presentation, the following reference must be cited:
 
 Zare, A.; Gader, P.; , "Sparsity Promoting Iterated Constrained Endmember Detection in Hyperspectral Imagery,"" IEEE Geoscience and Remote Sensing Letters, vol.4, no.3, pp.446-450, July 2007.
+
+NOTE: If the code is used anywhere or in any presentation or publication, include the following reference: 
+
+
 ****
 
 The SPICE Algorithm in Python is run using the function:
@@ -64,16 +68,17 @@ a plot of the wavelength and reflectance of each endmember will appear.
 It is recommended that you use a python virtual environment for this project using the following commands from the 
 SPICE_py directory:
 * ```pip install virtualenv``` (If you don't have the package installed already)
-* ```python3 -m venv spice_env```
-* ```source ./spice_env/bin/activate``` (Linux/MAC OS)
-* ```spice_env\bin\activate.bat``` (Windows)
-
+* ```python3 -m venv spice_env``` (Linux/Mac OSX)
+* ```source ./spice_env/bin/activate``` (Linux/Mac OSX)
+* ```python -m venv spice_env``` (Windows)
+* ```spice_env\Scripts\activate.bat``` (Windows)
 
 This program uses the python packages in the requirements.txt file. Those can be installed using the command:
 
 ```pip install -r requirements.txt``` 
 
-This must also be done from the SPICE_py directory.
+This must also be done from the SPICE_py directory. If you run into issues, particularly on Windows, you may want to
+consider using conda forge and conda environments for the install.
 
 ### Questions
 If you have any questions, please contact:  
@@ -81,9 +86,8 @@ If you have any questions, please contact:
 Alina Zare  
 Electrical and Computer Engineering  
 University of Florida    
-azare@ufl.edu  
-
-
+azare [at] ufl.edu  
 
 % This product is Copyright (c) 2018 
 % All rights reserved.
+
