@@ -5,13 +5,17 @@ Created on Sun Jan 21 21:52:00 2018
 @author: weihuang.xu
 """
 #==============================================================================
+# This product is Copyright (c) 2013 University of Missouri and University
+# of Florida
+# All rights reserved.
+#
 # SPICE Sparsity Promoting Iterated Constrained Endmembers Algorithm
 #       Finds Endmembers and Unmixes Input Data
 # 
 # Syntax: [endmembers, P] = SPICE(inputData, parameters)
 # 
 # Inputs:
-#   inputData - double Mat - NxM matrix of M data points of
+#   inputData - float numpy array - NxM matrix of M data points of
 #       dimensionality N (i.e.  M pixels with N spectral bands, each pixel is
 #       a column vector)
 #   parameters - struct - The struct contains the following fields:
@@ -29,12 +33,12 @@ Created on Sun Jan 21 21:52:00 2018
 #                       otherwise NxM matrix of M endmembers with N spectral
 #                       bands, Number of endmembers must equal parameters.M
 # Outputs:
-#   endmembers - double Mat - NxM matrix of M endmembers with N spectral
+#   endmembers - float numpy array - NxM matrix of M endmembers with N spectral
 #       bands
-#   P - double Mat - NxM matrix of abundances corresponding to M input
+#   P - float numpy array - NxM matrix of abundances corresponding to M input
 #       pixels and N endmembers
-# Other m-files required: unmix, Matlab Optimization Toolbox
-# 
+#
+#
 # Author: Alina Zare
 # University of Missouri, Electrical and Computer Engineering
 # Email Address: azare@ufl.edu
@@ -174,6 +178,26 @@ def SPICE(inputData, parameters):
     
 
 #==============================================================================
+# Unmix2 finds an accurate estimation of the proportions of each endmember
+#
+# Syntax: P2 = unmix2(data, endmembers, gammaConst, P)
+#
+# Inputs:
+#   data - float numpy array - NxM matrix of M data points of
+#       dimensionality N (i.e.  M pixels with N spectral bands, each pixel is
+#       a column vector)
+#   endmembers - float numpy array - NxM matrix of M data points of
+#       dimensionality N (i.e.  M pixels with N spectral bands, each pixel is
+#       a column vector)
+#   gammaConst - float - Gamma Constant for SPT term
+#   P - float numpy array - NxM matrix of abundances corresponding to M input
+#       pixels and N endmembers
+# Outputs:
+#   endmembers - float numpy array - NxM matrix of M endmembers with N spectral
+#       bands
+#   P - float numpy array - NxM matrix of abundances corresponding to M input
+#       pixels and N endmembers
+#
 # This product is Copyright (c) 2013 University of Missouri and University
 # of Florida
 # All rights reserved.
