@@ -80,6 +80,9 @@ This program uses the python packages in the requirements.txt file. Those can be
 This must also be done from the SPICE_py directory. If you run into issues, particularly on Windows, you may want to
 consider using conda forge and conda environments for the install.
 
+Note: This code uses qpsolvers (see the QPP.py file) by Stephane Caron <stephane.caron@normalesup.org>
+
+
 ### Questions
 If you have any questions, please contact:  
 
