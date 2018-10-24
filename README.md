@@ -6,7 +6,9 @@ NOTE: If the SPICE Algorithm is used in any publication or presentation, the fol
 
 Zare, A.; Gader, P.; , "Sparsity Promoting Iterated Constrained Endmember Detection in Hyperspectral Imagery,"" IEEE Geoscience and Remote Sensing Letters, vol.4, no.3, pp.446-450, July 2007.
 
-NOTE: If the code is used anywhere or in any presentation or publication, include the following reference: 
+NOTE: If the code is used anywhere or in any presentation or publication, include the following reference:
+Caleb, Taylor Glenn, Alina Zare, & Paul Gader. (2018, October 24). GatorSense/SPICE_py v1.0 (Version v1.0). Zenodo. http://doi.org/10.5281/zenodo.1470878
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1470878.svg)](https://doi.org/10.5281/zenodo.1470878)
 
 
 ****
