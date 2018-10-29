@@ -1,83 +1,31 @@
+import numpy as np
+from QPP import quadprog_solve_qp
+
 # -*- coding: utf-8 -*-
 """
 Created on Sun Jan 21 21:52:00 2018
 
-@author: weihuang.xu
+@author: weihuang.xu, Caleb Robey
 """
-#==============================================================================
-# This product is Copyright (c) 2013 University of Missouri and University
-# of Florida
-# All rights reserved.
-#
-# SPICE Sparsity Promoting Iterated Constrained Endmembers Algorithm
-#       Finds Endmembers and Unmixes Input Data
-# 
-# Syntax: [endmembers, P] = SPICE(inputData, parameters)
-# 
-# Inputs:
-#   inputData - float numpy array - NxM matrix of M data points of
-#       dimensionality N (i.e.  M pixels with N spectral bands, each pixel is
-#       a column vector)
-#   parameters - struct - The struct contains the following fields:
-#                   1. u : Regularization Parameter for RSS and V terms
-#                   2. gamma: Gamma Constant for SPT term
-#                   3. changeThresh: Stopping Criteria, Change threshold
-#                       for Objective Function.
-#                   4. M: Initial Number of endmembers
-#                   5. iterationCap: Maximum number of iterations
-#                   6. endmemberPruneThreshold: Proportion threshold used
-#                      to prune endmembers
-#                   7. produceDisplay : Set to 1 if a progress display is
-#                       wanted
-#                   8. initEM: Set to nan to randomly select endmembers,
-#                       otherwise NxM matrix of M endmembers with N spectral
-#                       bands, Number of endmembers must equal parameters.M
-# Outputs:
-#   endmembers - float numpy array - NxM matrix of M endmembers with N spectral
-#       bands
-#   P - float numpy array - NxM matrix of abundances corresponding to M input
-#       pixels and N endmembers
-#
-#
-# Author: Alina Zare
-# University of Missouri, Electrical and Computer Engineering
-# Email Address: azare@ufl.edu
-# Created: August 2006
-# Latest Revision: November 22, 2011
-# This product is Copyright (c) 2013 University of Missouri and University
-# of Florida
-# All rights reserved.
-# 
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions
-# are met:
-# 
-#   1. Redistributions of source code must retain the above copyright
-#      notice, this list of conditions and the following disclaimer.
-#   2. Redistributions in binary form must reproduce the above copyright
-#      notice, this list of conditions and the following disclaimer in the
-#      documentation and/or other materials provided with the distribution.
-#   3. Neither the name of the University nor the names of its contributors
-#      may be used to endorse or promote products derived from this software
-#      without specific prior written permission.
-# 
-# THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY OF MISSOURI AND
-# CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS
-# BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
-# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#==============================================================================
+"""
+This product is Copyright (c) 2013 University of Missouri and University
+of Florida
+All rights reserved.
 
-import numpy as np
-from QPP import quadprog_solve_qp
+SPICE Sparsity Promoting Iterated Constrained Endmembers Algorithm
+      Finds Endmembers and Unmixes Input Data
+
+Syntax: [endmembers, P] = SPICE(inputData, parameters)
+
+Author: Alina Zare
+University of Missouri, Electrical and Computer Engineering
+Email Address: azare@ufl.edu
+Created: August 2006
+Latest Revision: November 22, 2011
+This product is Copyright (c) 2013 University of Missouri and University
+of Florida
+All rights reserved.
+"""
 
 class SPICEParameters():
     
@@ -93,6 +41,34 @@ class SPICEParameters():
 
 
 def SPICE(inputData, parameters):
+    """"SPICE.
+    Inputs:
+    inputData           = NxM matrix of M data points of dimensionality N (i.e.  M pixels with N spectral bands, each
+                          pixel is a column vector)
+    parameters          = The object that contains the following fields:
+                          1. u : Regularization Parameter for RSS and V terms
+                          2. gamma: Gamma Constant for SPT term
+                          3. changeThresh: Stopping Criteria, Change threshold
+                              for Objective Function.
+                          4. M: Initial Number of endmembers
+                          5. iterationCap: Maximum number of iterations
+                          6. endmemberPruneThreshold: Proportion threshold used
+                             to prune endmembers
+                          7. produceDisplay : Set to 1 if a progress display is
+                              wanted
+                          8. initEM: Set to nan to randomly select endmembers,
+                              otherwise NxM matrix of M endmembers with N spectral
+                              bands, Number of endmembers must equal parameters.M
+    Returns:
+    endmembers        = NxM matrix of M endmembers with N spectral bands
+    P                 = NxM matrix of abundances corresponding to M input pixels and N endmembers
+
+    :param inputData: float numpy array
+    :param parameters: SPICEParameters object
+    :return endmembers: float numpy array
+    :return P: float numpy array
+
+    """
     input_params = parameters
     parameters = SPICEParameters()
     for k,v in input_params.__dict__.items():
@@ -176,64 +152,38 @@ def SPICE(inputData, parameters):
     
     return endmembers, P
     
+"""
+Unmix2 finds an accurate estimation of the proportions of each endmember
 
-#==============================================================================
-# Unmix2 finds an accurate estimation of the proportions of each endmember
-#
-# Syntax: P2 = unmix2(data, endmembers, gammaConst, P)
-#
-# Inputs:
-#   data - float numpy array - NxM matrix of M data points of
-#       dimensionality N (i.e.  M pixels with N spectral bands, each pixel is
-#       a column vector)
-#   endmembers - float numpy array - NxM matrix of M data points of
-#       dimensionality N (i.e.  M pixels with N spectral bands, each pixel is
-#       a column vector)
-#   gammaConst - float - Gamma Constant for SPT term
-#   P - float numpy array - NxM matrix of abundances corresponding to M input
-#       pixels and N endmembers
-# Outputs:
-#   endmembers - float numpy array - NxM matrix of M endmembers with N spectral
-#       bands
-#   P - float numpy array - NxM matrix of abundances corresponding to M input
-#       pixels and N endmembers
-#
-# This product is Copyright (c) 2013 University of Missouri and University
-# of Florida
-# All rights reserved.
-# 
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions
-# are met:
-# 
-#   1. Redistributions of source code must retain the above copyright
-#      notice, this list of conditions and the following disclaimer.
-#   2. Redistributions in binary form must reproduce the above copyright
-#      notice, this list of conditions and the following disclaimer in the
-#      documentation and/or other materials provided with the distribution.
-#   3. Neither the name of the University nor the names of its contributors
-#      may be used to endorse or promote products derived from this software
-#      without specific prior written permission.
-# 
-# THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY OF MISSOURI AND
-# CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS
-# BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
-# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#==============================================================================
-## CVXOPT package is used here. Parameters H,F,L,K,Aeq,beq are corresbonding to 
-## P,q,G,h,A,B, respectively. lb and ub are element-wise bound constraints which 
-## are added to matrix G and h respectively.
+Syntax: P2 = unmix2(data, endmembers, gammaConst, P)
+
+This product is Copyright (c) 2013 University of Missouri and University
+of Florida
+All rights reserved.
+
+CVXOPT package is used here. Parameters H,F,L,K,Aeq,beq are corresbonding to 
+P,q,G,h,A,B, respectively. lb and ub are element-wise bound constraints which 
+are added to matrix G and h respectively.
+"""
 
 def unmix2(data, endmembers, gammaConst=0, P=None):
+    """unmix2
+
+    Inputs:
+    data            = NxM matrix of M data points of dimensionality N (i.e.  M pixels with N spectral bands, each pixel
+                      is a column vector)
+    endmembers      = NxM matrix of M endmembers with N spectral bands
+    gammaConst      = Gamma Constant for SPT term
+    P               = NxM matrix of abundances corresponding to M input pixels and N endmembers
+
+    Returns:
+    P2              = NxM matrix of new abundances corresponding to M input pixels and N endmembers
+    :param data:
+    :param endmembers:
+    :param gammaConst:
+    :param P:
+    :return P2:
+    """
 
     X = data  # endmembers should be column vectors
     M = endmembers.shape[1]  # number of endmembers
