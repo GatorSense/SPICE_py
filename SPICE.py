@@ -1,5 +1,6 @@
 import numpy as np
 from QPP import quadprog_solve_qp
+from cvxopt import *
 
 # -*- coding: utf-8 -*-
 """
@@ -71,7 +72,7 @@ def SPICE(inputData, parameters):
     """
     input_params = parameters
     parameters = SPICEParameters()
-    for k,v in input_params.__dict__.items():
+    for k, v in input_params.__dict__.items():
         parameters.__dict__[k] = v
 
     parameters.pruningIteration = 1
@@ -106,7 +107,7 @@ def SPICE(inputData, parameters):
         iteration = iteration + 1
 
         # Given Endmembers, minimize P -- Quadratic Programming Problem
-        P = unmix2(X, endmembers, parameters.gamma, P)
+        P = unmix3(X, endmembers, parameters.gamma, P)
         
         # Given P minimize Endmembers
         endmembersPrev = endmembers
@@ -220,3 +221,37 @@ def unmix2(data, endmembers, gammaConst=0, P=None):
     P2[P2 < 0] = 0
 
     return P2
+
+
+def unmix3(data, endmembers, gammaConst=0, P=None):
+    X = data  # endmembers should be column vectors
+    M = endmembers.shape[1]  # number of endmembers
+    N = X.shape[1]  # number of pixels
+     # Equation constraint Aeq*x = beq
+    # All values must sum to 1 (X1+X2+...+XM = 1)
+    Aeq = np.ones((1, M))
+    beq = np.ones((1, 1))
+     # Boundary Constraints ub >= x >= lb
+    # All values must be greater than 0 (0 ? X1,0 ? X2,...,0 ? XM)
+    lb = 0
+    ub = 1
+    g_lb = np.eye(M) * -1
+    g_ub = np.eye(M)
+    # import pdb; pdb.set_trace()
+    G = np.concatenate((g_lb, g_ub), axis=0)
+    h_lb = np.ones((M, 1)) * lb
+    h_ub = np.ones((M, 1)) * ub
+    h = np.concatenate((h_lb, h_ub), axis=0)
+
+    if P is None:
+        P = np.ones((M, 1)) / M
+
+    gammaVecs = np.divide(gammaConst, sum(P))
+    H = 2 * (endmembers.T @ endmembers)
+    cvxarr = np.zeros((N,M))
+    for i in range(N):
+        F = ((np.transpose(-2 * X[:, i]) @ endmembers) + gammaVecs).T
+        cvxopt_ans = solvers.qp(P=matrix(H), q=matrix(F), G=matrix(G), h=matrix(h), A=matrix(Aeq), b=matrix(beq))
+        cvxarr[i, :] = np.array(cvxopt_ans['x']).T
+    cvxarr[cvxarr < 0] = 0
+    return cvxarr
