@@ -27,6 +27,7 @@ of Florida
 All rights reserved.
 """
 
+
 class SPICEParameters():
     
     def __init__(self):
@@ -151,7 +152,8 @@ def SPICE(inputData, parameters):
             print(' ')
     
     return endmembers, P
-    
+
+
 """
 Unmix3 finds an accurate estimation of the proportions of each endmember
 
@@ -165,6 +167,7 @@ CVXOPT package is used here. Parameters H,F,L,K,Aeq,beq are corresbonding to
 P,q,G,h,A,B, respectively. lb and ub are element-wise bound constraints which 
 are added to matrix G and h respectively.
 """
+
 
 def unmix3(data, endmembers, gammaConst=0, P=None):
     """unmix3
