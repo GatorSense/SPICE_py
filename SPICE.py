@@ -1,6 +1,5 @@
 import numpy as np
-from QPP import quadprog_solve_qp
-from cvxopt import *
+from cvxopt import solvers, matrix
 
 # -*- coding: utf-8 -*-
 """
@@ -154,7 +153,7 @@ def SPICE(inputData, parameters):
     return endmembers, P
     
 """
-Unmix2 finds an accurate estimation of the proportions of each endmember
+Unmix3 finds an accurate estimation of the proportions of each endmember
 
 Syntax: P2 = unmix2(data, endmembers, gammaConst, P)
 
@@ -167,8 +166,8 @@ P,q,G,h,A,B, respectively. lb and ub are element-wise bound constraints which
 are added to matrix G and h respectively.
 """
 
-def unmix2(data, endmembers, gammaConst=0, P=None):
-    """unmix2
+def unmix3(data, endmembers, gammaConst=0, P=None):
+    """unmix3
 
     Inputs:
     data            = NxM matrix of M data points of dimensionality N (i.e.  M pixels with N spectral bands, each pixel
@@ -186,44 +185,7 @@ def unmix2(data, endmembers, gammaConst=0, P=None):
     :return P2:
     """
 
-    X = data  # endmembers should be column vectors
-    M = endmembers.shape[1]  # number of endmembers
-    N = X.shape[1]  # number of pixels
-
-    # Equation constraint Aeq*x = beq
-    # All values must sum to 1 (X1+X2+...+XM = 1)
-    Aeq = np.ones((1, M))
-    beq = np.ones((1, 1))
-
-    # Boundary Constraints ub >= x >= lb
-    # All values must be greater than 0 (0 ? X1,0 ? X2,...,0 ? XM)
-    lb = 0
-    ub = 1
-    g_lb = np.eye(M) * -1
-    g_ub = np.eye(M)
-    # import pdb; pdb.set_trace()
-    G = np.concatenate((g_lb, g_ub), axis=0)
-    h_lb = np.ones((M, 1)) * lb
-    h_ub = np.ones((M, 1)) * ub
-    h = np.concatenate((h_lb, h_ub), axis=0)
-    if P is None:
-        P = np.ones((M, 1)) / M
-    gammaVecs = np.divide(gammaConst, sum(P))
-
-    H = 2 * (endmembers.T @ endmembers)
-    P2 = np.zeros((N, M))
-
-    for i in range(N):
-        F = ((np.transpose(-2 * X[:, i]) @ endmembers) + gammaVecs).T
-        qpas_ans = quadprog_solve_qp(P=H, q=F, G=G, h=h.T, A=Aeq, b=beq.T, initvals=None)
-        P2[i, :] = qpas_ans
-
-    P2[P2 < 0] = 0
-
-    return P2
-
-
-def unmix3(data, endmembers, gammaConst=0, P=None):
+    solvers.options['show_progress'] = False
     X = data  # endmembers should be column vectors
     M = endmembers.shape[1]  # number of endmembers
     N = X.shape[1]  # number of pixels
