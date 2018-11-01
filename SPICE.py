@@ -157,7 +157,7 @@ def SPICE(inputData, parameters):
 """
 Unmix3 finds an accurate estimation of the proportions of each endmember
 
-Syntax: P2 = unmix2(data, endmembers, gammaConst, P)
+Syntax: P2 = unmix3(data, endmembers, gammaConst, P)
 
 This product is Copyright (c) 2013 University of Missouri and University
 of Florida
