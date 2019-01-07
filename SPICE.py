@@ -1,5 +1,6 @@
 import numpy as np
 from cvxopt import solvers, matrix
+from QPP import quadprog_solve_qp
 
 # -*- coding: utf-8 -*-
 """
@@ -39,6 +40,8 @@ class SPICEParameters():
         self.iterationCap = 5000 #Alternate stopping criterion
         self.produceDisplay = 1
         self.initEM = None  #This randomly selects parameters.M initial endmembers from the input data
+        self.qp_solver = 'cvxopt' #or QPP
+        self.prescale = True
 
 
 def SPICE(inputData, parameters):
@@ -70,20 +73,23 @@ def SPICE(inputData, parameters):
     :return P: float numpy array
 
     """
-    input_params = parameters
-    parameters = SPICEParameters()
-    for k, v in input_params.__dict__.items():
-        parameters.__dict__[k] = v
+    base_params = SPICEParameters()
+    base_params.__dict__.update(parameters.__dict__)
+    parameters = base_params
 
     parameters.pruningIteration = 1
     M = parameters.M
     X = inputData
 
+    if parameters.prescale:
+        prescaler = X.max()
+        X /= prescaler
+
     if parameters.initEM is None:
         # Find Random Initial Endmembers
-        randIndices = np.random.permutation(inputData.shape[1])
+        randIndices = np.random.permutation(X.shape[1])
         randIndices = randIndices[0:parameters.M]
-        endmembers = inputData[:,randIndices]
+        endmembers = X[:,randIndices]
         parameters.initEM = endmembers
 
     else:
@@ -91,6 +97,13 @@ def SPICE(inputData, parameters):
         M = parameters.initEM.shape[1]
         endmembers = parameters.initEM
     
+    # chose unmixing implementation
+    if parameters.qp_solver == 'cvxopt':
+        unmix = unmix_cvxopt
+    else:
+        unmix = unmix_qpp
+
+
     # N is the number of pixels, RSSreg is the current objective function total.
     N = X.shape[1]
     RSSreg = np.inf
@@ -107,7 +120,7 @@ def SPICE(inputData, parameters):
         iteration = iteration + 1
 
         # Given Endmembers, minimize P -- Quadratic Programming Problem
-        P = unmix3(X, endmembers, parameters.gamma, P)
+        P = unmix(X, endmembers, parameters.gamma, P)
         
         # Given P minimize Endmembers
         endmembersPrev = endmembers
@@ -150,14 +163,17 @@ def SPICE(inputData, parameters):
             print('Number of Endmembers: {}'.format(M))
             print('Iteration: {}'.format(iteration))
             print(' ')
+
+    if parameters.prescale:
+        endmembers *= prescaler
     
     return endmembers, P
 
 
 """
-Unmix3 finds an accurate estimation of the proportions of each endmember
+unmix finds an accurate estimation of the proportions of each endmember
 
-Syntax: P2 = unmix3(data, endmembers, gammaConst, P)
+Syntax: P2 = unmix(data, endmembers, gammaConst, P)
 
 This product is Copyright (c) 2013 University of Missouri and University
 of Florida
@@ -169,28 +185,22 @@ are added to matrix G and h respectively.
 """
 
 
-def unmix3(data, endmembers, gammaConst=0, P=None):
-    """unmix3
+def unmix_cvxopt(data, endmembers, gammaConst=0, P=None):
+    """unmix
 
     Inputs:
-    data            = NxM matrix of M data points of dimensionality N (i.e.  M pixels with N spectral bands, each pixel
-                      is a column vector)
-    endmembers      = NxM matrix of M endmembers with N spectral bands
+    data            = DxN matrix of N data points of dimensionality D 
+    endmembers      = DxM matrix of M endmembers with D spectral bands
     gammaConst      = Gamma Constant for SPT term
-    P               = NxM matrix of abundances corresponding to M input pixels and N endmembers
+    P               = NxM matrix of abundances corresponding to N input pixels and M endmembers
 
     Returns:
-    P2              = NxM matrix of new abundances corresponding to M input pixels and N endmembers
-    :param data:
-    :param endmembers:
-    :param gammaConst:
-    :param P:
-    :return P2:
+    P2              = NxM matrix of new abundances corresponding to N input pixels and M endmembers
     """
 
     solvers.options['show_progress'] = False
-    X = data  # endmembers should be column vectors
-    M = endmembers.shape[1]  # number of endmembers
+    X = data  
+    M = endmembers.shape[1]  # number of endmembers # endmembers should be column vectors
     N = X.shape[1]  # number of pixels
      # Equation constraint Aeq*x = beq
     # All values must sum to 1 (X1+X2+...+XM = 1)
@@ -202,7 +212,9 @@ def unmix3(data, endmembers, gammaConst=0, P=None):
     ub = 1
     g_lb = np.eye(M) * -1
     g_ub = np.eye(M)
+    
     # import pdb; pdb.set_trace()
+
     G = np.concatenate((g_lb, g_ub), axis=0)
     h_lb = np.ones((M, 1)) * lb
     h_ub = np.ones((M, 1)) * ub
@@ -220,3 +232,40 @@ def unmix3(data, endmembers, gammaConst=0, P=None):
         cvxarr[i, :] = np.array(cvxopt_ans['x']).T
     cvxarr[cvxarr < 0] = 0
     return cvxarr
+
+def unmix_qpp(data, endmembers, gammaConst=0, P=None):
+    
+    X = data  #endmembers should be column vectors
+    M = endmembers.shape[1]  #number of endmembers
+    N = X.shape[1]  #number of pixels
+    
+    #Equation constraint Aeq*x = beq
+    #All values must sum to 1 (X1+X2+...+XM = 1)
+    Aeq = np.ones((1, M))
+    beq = np.ones((1, 1))
+    
+    #Boundary Constraints ub >= x >= lb
+    #All values must be greater than 0 (0 ? X1,0 ? X2,...,0 ? XM)
+    lb = 0
+    ub = 1
+    g_lb = np.eye(M)*-1
+    g_ub = np.eye(M)
+    #import pdb; pdb.set_trace()
+    G = np.concatenate((g_lb,g_ub), axis=0)
+    h_lb = np.ones((M, 1))*lb
+    h_ub = np.ones((M, 1))*ub
+    h = np.concatenate((h_lb,h_ub),axis=0)
+    if P is None:
+        P = np.ones((M,1))/M
+    gammaVecs = np.divide(gammaConst,sum(P))
+    
+    H = 2 * (endmembers.T @ endmembers)
+    P2 = np.zeros((N, M))
+    for i in range(N):
+        F = ((np.transpose(-2*X[:,i]) @ endmembers)+gammaVecs).T
+        qpas_ans = quadprog_solve_qp(P=H, q=F, G=G, h=h.T, A=Aeq, b=beq.T, initvals=None)
+        P2[i,:] = qpas_ans
+    
+    P2[P2<0] = 0
+    
+    return P2 

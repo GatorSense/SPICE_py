@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 def main():
 
     # load the data from the pickle file
-    f = open('hsi_data.pkl', 'rb')
-    hsi_file = pickle.load(f)
+    with open('hsi_data.pkl', 'rb') as f:
+        hsi_file = pickle.load(f)
     hsi = hsi_file['hsi']
     valid_mask = hsi['valid_mask'].astype(bool)
 
@@ -30,6 +30,7 @@ def main():
 
     # get the default parameters from the SPICE.py file
     params = SPICEParameters()
+    params.qp_solver = 'QPP'
 
     # run the spice algorithm on the down sampled data
     [endmembers, ds_proportions] = SPICE(ds_data, params)
@@ -47,9 +48,13 @@ def main():
     plt.title('SPICE Endmembers')
 
     # unmix the data using the non-downsampled array and the endmembers that SPICE discovered
-    P = unmix2(input_data, endmembers)
+    if params.qp_solver == 'cvxopt':
+        P = unmix_cvxopt(input_data, endmembers)
+    else:
+        scaler = input_data.max()
+        P = unmix_qpp(input_data/scaler,endmembers/scaler)
 
-    # re-reval abundance maps
+    # re-ravel abundance maps
     P_imgs = []
     for i in range(n_em):
         map_lin = np.zeros((n_r * n_c,))
@@ -71,7 +76,8 @@ def main():
     if (n_em % 2 == 0):
         fig.delaxes(axes.flatten()[(2*(int(n_em/2)+1)) -1])
     plt.show()
-    return
+    
 
 # run the main method
-main()
+if __name__ == '__main__':
+    main()
