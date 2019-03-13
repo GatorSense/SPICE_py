@@ -86,6 +86,7 @@ def SPICE(inputData, parameters):
         X /= prescaler
 
     if parameters.initEM is None:
+        np.random.seed()
         # Find Random Initial Endmembers
         randIndices = np.random.permutation(X.shape[1])
         randIndices = randIndices[0:parameters.M]
