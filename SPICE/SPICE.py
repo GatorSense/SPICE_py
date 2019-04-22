@@ -1,6 +1,6 @@
 import numpy as np
 from cvxopt import solvers, matrix
-from QPP import quadprog_solve_qp
+#from QPP import quadprog_solve_qp
 
 # -*- coding: utf-8 -*-
 """
