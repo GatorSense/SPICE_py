@@ -41,7 +41,7 @@ class SPICEParameters():
         self.produceDisplay = 1
         self.initEM = None  #This randomly selects parameters.M initial endmembers from the input data
         self.qp_solver = 'cvxopt' #or QPP
-        self.prescale = True
+        self.prescale = True  # set to normalize SPICE input between 0 and 1
 
 
 def SPICE(inputData, parameters):
@@ -81,6 +81,7 @@ def SPICE(inputData, parameters):
     M = parameters.M
     X = inputData
 
+    # prescale the data between 0 and 1
     if parameters.prescale:
         prescaler = X.max()
         X /= prescaler
@@ -110,6 +111,7 @@ def SPICE(inputData, parameters):
     change = np.inf
     
     iteration = 0
+    # initialize proportion map
     P = np.ones((N,M))*(1/M)
     lamb = N*parameters.u/((M-1)*(1-parameters.u))
     Im = np.eye(M)
@@ -132,7 +134,7 @@ def SPICE(inputData, parameters):
        
         pruneIndex = (P.max(0)<parameters.endmemberPruneThreshold)*1
         minmaxP = P.max(0).min()
-       
+
         if(sum(pruneIndex) > 0):
             pruneFlag = 1
             
@@ -164,6 +166,7 @@ def SPICE(inputData, parameters):
             print('Iteration: {}'.format(iteration))
             print(' ')
 
+    # rescale the endmember to the original values
     if parameters.prescale:
         endmembers *= prescaler
     
