@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7bc1ea27-51fe-4517-b7a8-c3646df6594a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/SPICE/SPICE/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SPICE/QPP.py" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/SPICE/QPP.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SPICE/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SPICE_py/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SPICE_py/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SPICE_py/SPICE/QPP.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SPICE_py/SPICE/util/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/util/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SPICE_py/SPICE/util/loadmat.py" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/util/loadmat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SPICE_py/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hsi_data.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/util/hsi_data.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loadmat.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spice_py_demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/util/spice_py_demo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_spice_danforth.py" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/util/test_spice_danforth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SPICE/SPICE.py" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/SPICE/SPICE.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SPICE/SPICE/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/SPICE/SPICE/__init__.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,7 +27,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SPICE/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="30">
@@ -51,6 +37,23 @@
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/SPICE/SPICE/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SPICE/SPICE/QPP.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -78,6 +81,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/SPICE/__init__.py" />
+        <option value="$PROJECT_DIR$/SPICE/SPICE/__init__.py" />
       </list>
     </option>
   </component>
@@ -128,6 +132,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/SPICE/SPICE" />
       <recent name="$PROJECT_DIR$/SPICE/util" />
       <recent name="$PROJECT_DIR$/SPICE" />
     </key>
@@ -208,6 +213,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SPICE/SPICE/QPP.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SPICE/SPICE/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
