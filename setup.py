@@ -38,7 +38,7 @@ requirements_f = open('requirements.txt', 'r')
 dependencies = [ req for req in requirements_f.readlines() ]
 
 setuptools.setup(
-    name='SPICE_py',
+    name='SPICE_HSI',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
