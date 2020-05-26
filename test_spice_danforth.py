@@ -1,7 +1,7 @@
 import pickle
 from SPICE import *
 import matplotlib.pyplot as plt
-from loadmat import loadmat
+from SPICE.util.loadmat import loadmat
 
 def main():
 
