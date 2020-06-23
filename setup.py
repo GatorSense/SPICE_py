@@ -7,26 +7,8 @@ https://github.com/pypa/sampleproject
 
 import sys
 import setuptools
-#from setuptools.command.test import test as TestCommand
 from codecs import open
 from os import path
-
-
-# class PyTest(TestCommand):
-#     def initialize_options(self):
-#         TestCommand.initialize_options(self)
-#         self.pytest_args = ["--verbose", "tests/tests.py"]
-#
-#     def finalize_options(self):
-#         TestCommand.finalize_options(self)
-#         self.test_args = []
-#         self.test_suite = True
-#
-#     def run_tests(self):
-#         import pytest
-#         errno = pytest.main(self.pytest_args)
-#         sys.exit(errno)
-
 
 here = path.abspath(path.dirname(__file__))
 
@@ -62,7 +44,7 @@ setuptools.setup(
     platforms=['Any'],
 
     # Version number
-    version='1.3',
+    version='1.4',
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
@@ -75,6 +57,7 @@ setuptools.setup(
         # Indicate who your project is intended for
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Bio-Informatics',
+        'Topic :: Scientific/Engineering :: GIS',
 
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: MIT License',
@@ -87,7 +70,7 @@ setuptools.setup(
     ],
 
     # What does your project relate to?
-    keywords='plant phenotyping bioinformatics hyperspectral machine-learning sensing endmembers',
+    keywords='plant phenotyping, bioinformatics, hyperspectral, machine-learning, sensing endmembers',
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
@@ -110,8 +93,6 @@ setuptools.setup(
     # extras_require={
     #     'test': ['pytest-runner', 'pytest'],
     # },
-    setup_requires=["pytest-runner"],
-    tests_require=['pytest'],
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these
